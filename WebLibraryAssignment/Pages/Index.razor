@@ -1,0 +1,52 @@
+﻿@page "/"
+@using WebLibraryAssignment.FrontEndData
+@inject LibraryController libraryController
+@inject NavigationManager NavManager
+
+<div class="ui container">
+
+    <div class="ui menu">
+        <a class="item" @onclick="@redirectCreate">Add date</a>
+    </div>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>Title<button @onclick="() => SortBooks(1)">^</button><button @onclick="() => SortBooks(1)">v</button></th>
+        <th @onclick="() => SortBooks(2)">Genre</th>
+        <th @onclick="() => SortBooks(3)">Author</th>
+        <th @onclick="() => SortBooks(4)">Stock</th>
+        <th @onclick="() => SortBooks(5)">Description</th>
+    </tr>
+    @foreach (var book in books)
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.Author</td>
+            <td>@book.Genre</td>
+            <td>@book.Stock</td>
+            <td>@book.Description</td>
+        </tr>
+    }
+</table>
+
+@code {
+    private List<Book> books { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        books = libraryController.GetAll();
+    }
+
+    private void redirectCreate()
+    {
+        NavManager.NavigateTo("/addBookItem");
+    }
+
+    private void SortBooks(int sort)
+    {
+        books = libraryController.SortBooks(sort);
+        StateHasChanged();
+    }
+}

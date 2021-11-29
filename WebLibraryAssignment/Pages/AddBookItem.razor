@@ -1,0 +1,48 @@
+﻿@page "/addBookItem"
+@using WebLibraryAssignment.FrontEndData
+@inject LibraryController libraryController
+@inject NavigationManager NavManager
+
+<h3>Add book item</h3>
+
+<EditForm Model="@bookItem" OnValidSubmit=@createBook>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Name">Title</label>
+        <InputText id="Title" class="form-control" @bind-Value="bookItem.Title" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Author">Author</label>
+        <InputText id="Author" class="form-control" @bind-Value="bookItem.Author" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Genre">Genre</label>
+        <InputText id="Genre" class="form-control" @bind-Value="bookItem.Genre" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Stock">Stock of books</label>
+        <InputNumber id="Stock" class="form-control" @bind-Value="bookItem.Stock" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <InputText id="Description" class="form-control" @bind-Value="bookItem.Description" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">AddItem</button>
+</EditForm>
+
+@code {
+    Book bookItem = new Book();
+
+    public void createBook()
+    {
+        libraryController.Create(bookItem);
+        NavManager.NavigateTo("/");
+    }
+}
